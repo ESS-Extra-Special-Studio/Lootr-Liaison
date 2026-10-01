@@ -114,33 +114,22 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-def deadAirTestMods = file('C:/Users/Ksivi/curseforge/minecraft/Instances/dead air tests/mods')
 def cIdeasMods = file('C:/Users/Ksivi/curseforge/minecraft/Instances/C.Ideas/mods')
 def forgeJarName = "${mod_id}-${version}+${minecraft_version}-forge.jar"
 
-def cleanLootrLiasonJars = { File dir ->
+def cleanLootrLiaisonJars = { File dir ->
     if (dir.exists()) {
-        dir.listFiles()?.findAll { it.name.startsWith("${mod_id}-") && it.name.endsWith('.jar') }?.each { it.delete() }
+        dir.listFiles()?.findAll {
+            it.name.endsWith('.jar') && (it.name.startsWith("${mod_id}-") || it.name.startsWith('lootr_liason-'))
+        }?.each { it.delete() }
     }
 }
 
-tasks.register('deployDeadAirTests', Copy) {
+tasks.register('deployToTestPack', Copy) {
     group = 'distribution'
-    description = 'Copies the built Forge jar into dead air tests mods folder'
+    description = 'Copies the built Forge jar into the C.Ideas test modpack'
     dependsOn 'build'
-    doFirst { cleanLootrLiasonJars(deadAirTestMods) }
-    from(layout.buildDirectory.dir('libs')) {
-        include forgeJarName
-    }
-    into(deadAirTestMods)
-    onlyIf { deadAirTestMods.exists() }
-}
-
-tasks.register('deployCIdeas', Copy) {
-    group = 'distribution'
-    description = 'Copies the built Forge jar into C.Ideas mods folder'
-    dependsOn 'build'
-    doFirst { cleanLootrLiasonJars(cIdeasMods) }
+    doFirst { cleanLootrLiaisonJars(cIdeasMods) }
     from(layout.buildDirectory.dir('libs')) {
         include forgeJarName
     }
@@ -150,6 +139,6 @@ tasks.register('deployCIdeas', Copy) {
 
 tasks.register('deployAll') {
     group = 'distribution'
-    description = 'Deploy Forge jar to dead air tests and C.Ideas'
-    dependsOn 'deployDeadAirTests', 'deployCIdeas'
+    description = 'Deploy Forge jar to C.Ideas test modpack'
+    dependsOn 'deployToTestPack'
 }

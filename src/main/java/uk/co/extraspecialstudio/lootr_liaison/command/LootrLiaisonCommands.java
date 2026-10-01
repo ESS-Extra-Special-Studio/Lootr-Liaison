@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.command;
+package uk.co.extraspecialstudio.lootr_liaison.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -11,16 +11,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
-import uk.co.extraspecialstudio.lootr_liason.LiaisonNbt;
+import uk.co.extraspecialstudio.lootr_liaison.LiaisonNbt;
 
 /**
- * /lootr_liason mimics stats
- * /lootr_liason mimics reset here [radius]
+ * /lootr_liaison mimics stats
+ * /lootr_liaison mimics reset here [radius]
+ * /lootr_liason remains as the 1.2.x alias.
  */
 public final class LootrLiaisonCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> d) {
-        d.register(Commands.literal("lootr_liason")
+        d.register(root("lootr_liaison"));
+        d.register(root("lootr_liason"));
+    }
+
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> root(String name) {
+        return Commands.literal(name)
                 .requires(s -> s.hasPermission(2))
                 .then(Commands.literal("mimics")
                         .then(Commands.literal("stats").executes(c -> mimicsStats(c.getSource())))
@@ -28,7 +34,7 @@ public final class LootrLiaisonCommands {
                                 .then(Commands.literal("here")
                                         .executes(ctx -> mimicsReset(ctx.getSource(), 8))
                                         .then(Commands.argument("radius", IntegerArgumentType.integer(1, 64))
-                                                .executes(ctx -> mimicsReset(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "radius"))))))));
+                                                .executes(ctx -> mimicsReset(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "radius")))))));
     }
 
     private static int mimicsStats(CommandSourceStack src) {
@@ -47,9 +53,9 @@ public final class LootrLiaisonCommands {
                 for (BlockEntity be : ((LevelChunk) chunk).getBlockEntities().values()) {
                     if (!(be instanceof RandomizableContainerBlockEntity)) continue;
                     CompoundTag tag = be.getPersistentData();
-                    if (!tag.getBoolean(LiaisonNbt.MIMIC_CHECKED)) continue;
+                    if (!LiaisonNbt.isMimicChecked(tag)) continue;
                     checked++;
-                    String res = tag.getString(LiaisonNbt.MIMIC_RESULT);
+                    String res = LiaisonNbt.mimicResult(tag);
                     if (LiaisonNbt.MIMIC_ARMED.equals(res)) armed++;
                     else if (LiaisonNbt.MIMIC_SPAWNED.equals(res)) spawned++;
                 }
@@ -75,9 +81,8 @@ public final class LootrLiaisonCommands {
                     BlockEntity be = level.getBlockEntity(pos);
                     if (!(be instanceof RandomizableContainerBlockEntity)) continue;
                     CompoundTag tag = be.getPersistentData();
-                    if (!tag.getBoolean(LiaisonNbt.MIMIC_CHECKED)) continue;
-                    tag.remove(LiaisonNbt.MIMIC_CHECKED);
-                    tag.remove(LiaisonNbt.MIMIC_RESULT);
+                    if (!LiaisonNbt.isMimicChecked(tag)) continue;
+                    LiaisonNbt.clearMimicStamps(tag);
                     be.setChanged();
                     cleared++;
                 }

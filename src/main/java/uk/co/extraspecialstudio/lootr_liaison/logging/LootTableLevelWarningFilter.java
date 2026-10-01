@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.logging;
+package uk.co.extraspecialstudio.lootr_liaison.logging;
 
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.filter.AbstractFilter;

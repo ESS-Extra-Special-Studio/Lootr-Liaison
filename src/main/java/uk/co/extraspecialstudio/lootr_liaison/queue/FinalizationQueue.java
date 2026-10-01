@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.queue;
+package uk.co.extraspecialstudio.lootr_liaison.queue;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,10 +10,10 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import uk.co.extraspecialstudio.lootr_liason.Config;
-import uk.co.extraspecialstudio.lootr_liason.LiaisonNbt;
-import uk.co.extraspecialstudio.lootr_liason.lootr.LootrAdapter;
-import uk.co.extraspecialstudio.lootr_liason.mimic.MimicStabilityLayer;
+import uk.co.extraspecialstudio.lootr_liaison.Config;
+import uk.co.extraspecialstudio.lootr_liaison.LiaisonNbt;
+import uk.co.extraspecialstudio.lootr_liaison.lootr.LootrAdapter;
+import uk.co.extraspecialstudio.lootr_liaison.mimic.MimicStabilityLayer;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -72,7 +72,7 @@ public final class FinalizationQueue {
             if (!(be instanceof RandomizableContainerBlockEntity rcb)) continue;
 
             CompoundTag tag = be.getPersistentData();
-            if (tag.getBoolean(LiaisonNbt.FINALIZED)) continue;
+            if (LiaisonNbt.isFinalized(tag)) continue;
 
             // Finalize: hand to Lootr (adapter may no-op if Lootr does it itself) and stamp
             LootrAdapter.finalize(level, e.pos, rcb);

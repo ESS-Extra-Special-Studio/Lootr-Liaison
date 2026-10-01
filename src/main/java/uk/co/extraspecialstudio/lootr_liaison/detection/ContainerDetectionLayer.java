@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.detection;
+package uk.co.extraspecialstudio.lootr_liaison.detection;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import uk.co.extraspecialstudio.lootr_liason.LiaisonNbt;
-import uk.co.extraspecialstudio.lootr_liason.queue.FinalizationQueue;
+import uk.co.extraspecialstudio.lootr_liaison.LiaisonNbt;
+import uk.co.extraspecialstudio.lootr_liaison.queue.FinalizationQueue;
 
 /**
  * Detects structure-generated loot containers on chunk load and enqueues them for finalization.
@@ -32,7 +32,7 @@ public final class ContainerDetectionLayer {
             CompoundTag tag = be.getPersistentData();
 
             // Skip if already finalized by us
-            if (tag.getBoolean(LiaisonNbt.FINALIZED)) continue;
+            if (LiaisonNbt.isFinalized(tag)) continue;
 
             // Must look like worldgen: LootTable or LootTableSeed in NBT (structure-generated have these; player-placed typically don't)
             boolean hasLootTable = tag.contains("LootTable") && !tag.getString("LootTable").isEmpty();
