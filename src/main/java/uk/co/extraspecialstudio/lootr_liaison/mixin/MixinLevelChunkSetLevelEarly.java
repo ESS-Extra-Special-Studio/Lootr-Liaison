@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.mixin;
+package uk.co.extraspecialstudio.lootr_liaison.mixin;
 
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -25,7 +25,7 @@ public class MixinLevelChunkSetLevelEarly {
     Level level;
 
     @Inject(method = "addAndRegisterBlockEntity", at = @At("HEAD"), require = 0)
-    private void lootr_liason_setLevelBeforeAdd(BlockEntity blockEntity, CallbackInfo ci) {
+    private void lootr_liaison_setLevelBeforeAdd(BlockEntity blockEntity, CallbackInfo ci) {
         if (blockEntity != null && blockEntity.getLevel() == null && level != null) {
             blockEntity.setLevel(level);
         }

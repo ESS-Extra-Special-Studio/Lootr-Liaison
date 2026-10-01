@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.compat;
+package uk.co.extraspecialstudio.lootr_liaison.compat;
 
 import net.neoforged.fml.ModList;
 

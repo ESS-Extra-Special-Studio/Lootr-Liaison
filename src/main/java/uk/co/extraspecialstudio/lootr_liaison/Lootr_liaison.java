@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason;
+package uk.co.extraspecialstudio.lootr_liaison;
 
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
@@ -6,26 +6,31 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.slf4j.Logger;
-import uk.co.extraspecialstudio.lootr_liason.command.LootrLiaisonCommands;
-import uk.co.extraspecialstudio.lootr_liason.compat.DeadLettersCompat;
-import uk.co.extraspecialstudio.lootr_liason.detection.ContainerDetectionLayer;
-import uk.co.extraspecialstudio.lootr_liason.logging.LootTableLevelWarningFilter;
-import uk.co.extraspecialstudio.lootr_liason.mimic.MimicStabilityLayer;
-import uk.co.extraspecialstudio.lootr_liason.queue.FinalizationQueue;
+import uk.co.extraspecialstudio.lootr_liaison.command.LootrLiaisonCommands;
+import uk.co.extraspecialstudio.lootr_liaison.compat.DeadLettersCompat;
+import uk.co.extraspecialstudio.lootr_liaison.detection.ContainerDetectionLayer;
+import uk.co.extraspecialstudio.lootr_liaison.logging.LootTableLevelWarningFilter;
+import uk.co.extraspecialstudio.lootr_liaison.mimic.MimicStabilityLayer;
+import uk.co.extraspecialstudio.lootr_liaison.queue.FinalizationQueue;
 
-@Mod(Lootr_liason.MODID)
-public class Lootr_liason {
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-    public static final String MODID = "lootr_liason";
+@Mod(Lootr_liaison.MODID)
+public class Lootr_liaison {
+
+    public static final String MODID = "lootr_liaison";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public Lootr_liason(IEventBus modEventBus, ModContainer modContainer) {
+    public Lootr_liaison(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
         NeoForge.EVENT_BUS.register(this);
@@ -33,7 +38,22 @@ public class Lootr_liason {
         NeoForge.EVENT_BUS.register(FinalizationQueue.class);
         NeoForge.EVENT_BUS.register(MimicStabilityLayer.class);
 
+        migrateLegacyConfig();
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    /** First launch after the id correction keeps the old common config. */
+    private static void migrateLegacyConfig() {
+        try {
+            Path dir = FMLPaths.CONFIGDIR.get();
+            Path legacy = dir.resolve("lootr_liason-common.toml");
+            Path current = dir.resolve(MODID + "-common.toml");
+            if (Files.exists(legacy) && !Files.exists(current)) {
+                Files.copy(legacy, current);
+            }
+        } catch (IOException e) {
+            LOGGER.warn("Lootr Liaison: could not copy legacy config", e);
+        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

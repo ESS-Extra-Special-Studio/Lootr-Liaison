@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "uk.co.extraspecialstudio.lootr_liason.mixin",
+  "package": "uk.co.extraspecialstudio.lootr_liaison.mixin",
   "compatibilityLevel": "JAVA_21",
-  "refmap": "lootr_liason.refmap.json",
+  "refmap": "lootr_liaison.refmap.json",
   "mixins": [
     "MixinLevelChunkSetLevelEarly"
   ],

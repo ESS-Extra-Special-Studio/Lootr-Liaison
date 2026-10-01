@@ -56,7 +56,7 @@ dependencies {
     // refmap is not required. Forcing the AP without NeoGradle mapping wiring fails the build.
 }
 
-// Named identity/empty refmap ships from src/main/resources/lootr_liason.refmap.json for mixins.json.
+// Named identity/empty refmap ships from src/main/resources/lootr_liaison.refmap.json for mixins.json.
 
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
@@ -102,7 +102,9 @@ tasks.register('deployNeoForgeTest', Copy) {
     dependsOn 'build'
     onlyIf { neoForgeTestMods.exists() }
     doFirst {
-        neoForgeTestMods.listFiles()?.findAll { it.name.startsWith("${mod_id}-") && it.name.endsWith('.jar') }?.each { it.delete() }
+        neoForgeTestMods.listFiles()?.findAll {
+            it.name.endsWith('.jar') && (it.name.startsWith("${mod_id}-") || it.name.startsWith('lootr_liason-'))
+        }?.each { it.delete() }
     }
     from(layout.buildDirectory.dir('libs')) {
         include "${mod_id}-${version}+${minecraft_version}-neoforge.jar"

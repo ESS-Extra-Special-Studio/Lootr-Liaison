@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.context;
+package uk.co.extraspecialstudio.lootr_liaison.context;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

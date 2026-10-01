@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.mimic;
+package uk.co.extraspecialstudio.lootr_liaison.mimic;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,14 +11,14 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import uk.co.extraspecialstudio.lootr_liason.Config;
-import uk.co.extraspecialstudio.lootr_liason.LiaisonNbt;
+import uk.co.extraspecialstudio.lootr_liaison.Config;
+import uk.co.extraspecialstudio.lootr_liaison.LiaisonNbt;
 
 import java.util.Random;
 
 /**
  * Mimic gate for mimics from the <b>Artifacts</b> mod: at most one mimic evaluation per eligible container.
- * Stamps: lootr_liason:mimic_checked, lootr_liason:mimic_result = "none"|"armed"|"spawned".
+ * Stamps: lootr_liaison:mimic_checked, lootr_liaison:mimic_result = "none"|"armed"|"spawned".
  * Option: roll at finalization (set armed) or on first_interact. Spawn is still done by Artifacts on first open.
  */
 public final class MimicStabilityLayer {
@@ -34,7 +34,7 @@ public final class MimicStabilityLayer {
     public static void rollAtFinalization(Level level, BlockPos pos, RandomizableContainerBlockEntity be) {
         if (!Config.enableArtifactsMimicCompat || !ModList.get().isLoaded("artifacts")) return;
         CompoundTag tag = be.getPersistentData();
-        if (tag.getBoolean(LiaisonNbt.MIMIC_CHECKED)) return;
+        if (LiaisonNbt.isMimicChecked(tag)) return;
         if (isExcluded(level, pos, be)) return;
 
         double chance = resolveMimicChance();
@@ -58,8 +58,8 @@ public final class MimicStabilityLayer {
         if (!(be instanceof RandomizableContainerBlockEntity rcb)) return;
 
         CompoundTag tag = be.getPersistentData();
-        if (tag.getBoolean(LiaisonNbt.MIMIC_CHECKED)) return; // already rolled; Artifacts will handle armed/spawned
-        if (!tag.getBoolean(LiaisonNbt.FINALIZED)) return;   // not finalized yet
+        if (LiaisonNbt.isMimicChecked(tag)) return; // already rolled; Artifacts will handle armed/spawned
+        if (!LiaisonNbt.isFinalized(tag)) return;   // not finalized yet
         if (isExcluded(event.getLevel(), pos, rcb)) return;
 
         double chance = resolveMimicChance();

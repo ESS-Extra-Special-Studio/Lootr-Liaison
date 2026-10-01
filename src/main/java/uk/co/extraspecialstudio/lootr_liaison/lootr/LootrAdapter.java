@@ -1,4 +1,4 @@
-package uk.co.extraspecialstudio.lootr_liason.lootr;
+package uk.co.extraspecialstudio.lootr_liaison.lootr;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

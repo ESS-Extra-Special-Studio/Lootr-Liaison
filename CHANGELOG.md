@@ -1,5 +1,12 @@
 # Changelog
 
+## Lootr Liaison 1.3.0
+
+### Changed
+- Corrected the name to Lootr Liaison. The mod id is now `lootr_liaison`, and the jar name follows that id.
+- Existing worlds keep container stamps written under the old id. `/lootr_liason` still runs; `/lootr_liaison` is the current command.
+- On first launch, `lootr_liason-common.toml` is copied to `lootr_liaison-common.toml` when the new file is missing.
+
 ## 1.2.2
 
 - Standalone: no ExtraSpecialCore / ExtraSpecialHub / ES Library. Pack-maker diagnostics stay on `/lootr_liason` commands.
