@@ -1,7 +1,7 @@
 package uk.co.extraspecialstudio.lootr_liaison.mimic;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -70,7 +70,7 @@ public final class MimicStabilityLayer {
     }
 
     private static boolean isExcluded(Level level, BlockPos pos, RandomizableContainerBlockEntity be) {
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(level.getBlockState(pos).getBlock());
+        ResourceLocation id = ForgeRegistries.BLOCKS.getKey(level.getBlockState(pos).getBlock());
         String idStr = id.toString();
         return Config.excludeContainerTypes.stream().anyMatch(s -> idStr.equals(s));
     }

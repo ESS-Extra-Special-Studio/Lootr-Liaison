@@ -80,7 +80,7 @@ public class Config {
                         "Container block ids excluded from mimic rolls.",
                         "Example: minecraft:barrel. Default: minecraft:barrel only."
                 )
-                .defineListAllowEmpty("exclude_container_types", List.of("minecraft:barrel"), Config::validateResourceId);
+                .defineList("exclude_container_types", new java.util.ArrayList<>(java.util.Collections.singletonList("minecraft:barrel")), Config::validateResourceId);
         RESPECT_ARTIFACTS_CONFIG = BUILDER
                 .comment(
                         "true: honour Artifacts' own mimic config when available.",
