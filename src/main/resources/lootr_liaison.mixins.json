@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "uk.co.extraspecialstudio.lootr_liaison.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "lootr_liaison.refmap.json",
+  "mixins": [
+    "MixinLevelChunkSetLevelEarly"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
