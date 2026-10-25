@@ -27,7 +27,7 @@ public final class LootrLiaisonCommands {
 
     private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> root(String name) {
         return Commands.literal(name)
-                .requires(s -> s.hasPermission(2))
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("mimics")
                         .then(Commands.literal("stats").executes(c -> mimicsStats(c.getSource())))
                         .then(Commands.literal("reset")
@@ -38,7 +38,7 @@ public final class LootrLiaisonCommands {
     }
 
     private static int mimicsStats(CommandSourceStack src) {
-        // Scan loaded chunks around the sender – expensive; for admin use only.
+        // Scan loaded chunks around the sender - expensive; for admin use only.
         Level level = src.getLevel();
         BlockPos center = src.getPlayer() != null ? src.getPlayer().blockPosition() : BlockPos.ZERO;
         int chunkR = 4; // 4 chunks = 64 blocks
