@@ -3,7 +3,7 @@ package uk.co.extraspecialstudio.lootr_liaison.mimic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
@@ -70,7 +70,7 @@ public final class MimicStabilityLayer {
     }
 
     private static boolean isExcluded(Level level, BlockPos pos, RandomizableContainerBlockEntity be) {
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(level.getBlockState(pos).getBlock());
+        Identifier id = BuiltInRegistries.BLOCK.getKey(level.getBlockState(pos).getBlock());
         String idStr = id.toString();
         return Config.excludeContainerTypes.stream().anyMatch(s -> idStr.equals(s));
     }

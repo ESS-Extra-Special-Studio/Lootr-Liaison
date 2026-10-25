@@ -1,7 +1,7 @@
 package uk.co.extraspecialstudio.lootr_liaison.context;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
@@ -22,7 +22,7 @@ public final class StructureContextEngine {
     }
 
     /** Optional: structure type for future mimic profiles. */
-    public static Optional<ResourceLocation> getStructureAt(Level level, BlockPos pos) {
+    public static Optional<Identifier> getStructureAt(Level level, BlockPos pos) {
         return Optional.empty();
     }
 
