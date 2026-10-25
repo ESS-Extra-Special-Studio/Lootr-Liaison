@@ -36,7 +36,7 @@ public final class ContainerDetectionLayer {
             if (LiaisonNbt.isFinalized(tag)) continue;
 
             // Must look like worldgen: LootTable or LootTableSeed in NBT (structure-generated have these; player-placed typically don't)
-            boolean hasLootTable = tag.contains("LootTable") && !tag.getString("LootTable").isEmpty();
+            boolean hasLootTable = tag.contains("LootTable") && !tag.getStringOr("LootTable", "").isEmpty();
             boolean hasLootTableSeed = tag.contains("LootTableSeed");
             if (!hasLootTable && !hasLootTableSeed) continue; // likely player-placed
 
