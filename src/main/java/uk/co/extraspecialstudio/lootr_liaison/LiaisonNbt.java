@@ -29,17 +29,17 @@ public final class LiaisonNbt {
     private LiaisonNbt() {}
 
     public static boolean isFinalized(CompoundTag tag) {
-        return tag.getBoolean(FINALIZED) || tag.getBoolean(LEGACY_PREFIX + "finalized");
+        return tag.getBooleanOr(FINALIZED, false) || tag.getBooleanOr(LEGACY_PREFIX + "finalized", false);
     }
 
     public static boolean isMimicChecked(CompoundTag tag) {
-        return tag.getBoolean(MIMIC_CHECKED) || tag.getBoolean(LEGACY_PREFIX + "mimic_checked");
+        return tag.getBooleanOr(MIMIC_CHECKED, false) || tag.getBooleanOr(LEGACY_PREFIX + "mimic_checked", false);
     }
 
     public static String mimicResult(CompoundTag tag) {
-        if (tag.contains(MIMIC_RESULT)) return tag.getString(MIMIC_RESULT);
+        if (tag.contains(MIMIC_RESULT)) return tag.getStringOr(MIMIC_RESULT, "");
         String legacy = LEGACY_PREFIX + "mimic_result";
-        return tag.contains(legacy) ? tag.getString(legacy) : "";
+        return tag.contains(legacy) ? tag.getStringOr(legacy, "") : "";
     }
 
     public static void clearMimicStamps(CompoundTag tag) {

@@ -1,9 +1,6 @@
 package uk.co.extraspecialstudio.lootr_liaison;
 
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.config.ModConfigEvent;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
@@ -14,7 +11,6 @@ import java.util.List;
  * Section banners and push/pop match the RadioTowers / Dead Letters style.
  * Paths stay {@code general.*} and {@code mimics.*} for existing modpacks.
  */
-@EventBusSubscriber(modid = Lootr_liaison.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class Config {
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -110,15 +106,14 @@ public class Config {
     private static boolean validateResourceId(Object obj) {
         if (!(obj instanceof String s)) return false;
         try {
-            ResourceLocation.parse(s);
+            Identifier.parse(s);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-    @SubscribeEvent
-    static void onLoad(ModConfigEvent event) {
+    public static void reload() {
         finalizationDelayTicks = FINALIZATION_DELAY_TICKS.get();
         maxFinalizationsPerTick = MAX_FINALIZATIONS_PER_TICK.get();
         enableArtifactsMimicCompat = ENABLE_ARTIFACTS_MIMIC_COMPAT.get();
