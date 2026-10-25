@@ -41,7 +41,7 @@ public final class FinalizationQueue {
     private static final Map<String, Boolean> SEEN = new ConcurrentHashMap<>();
 
     public static void enqueue(ResourceKey<Level> dim, BlockPos pos, long currentTick) {
-        String key = dim.location().toString() + "|" + pos.toShortString();
+        String key = dim.identifier().toString() + "|" + pos.toShortString();
         if (SEEN.putIfAbsent(key, true) != null) return; // already enqueued
         QUEUE.addLast(new Entry(dim, pos, currentTick));
     }
