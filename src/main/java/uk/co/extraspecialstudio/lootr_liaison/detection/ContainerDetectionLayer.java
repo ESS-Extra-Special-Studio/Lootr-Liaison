@@ -4,13 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.neoforged.bus.api.SubscribeEvent;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.event.level.ChunkEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import uk.co.extraspecialstudio.lootr_liaison.LiaisonNbt;
-import uk.co.extraspecialstudio.lootr_liaison.context.StructureContextEngine;
 import uk.co.extraspecialstudio.lootr_liaison.queue.FinalizationQueue;
 
 /**

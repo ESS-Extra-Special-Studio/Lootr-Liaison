@@ -7,8 +7,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import uk.co.extraspecialstudio.lootr_liaison.Config;
 import uk.co.extraspecialstudio.lootr_liaison.LiaisonNbt;
 import uk.co.extraspecialstudio.lootr_liaison.lootr.LootrAdapter;
@@ -47,8 +48,10 @@ public final class FinalizationQueue {
     }
 
     @SubscribeEvent
-    public static void onServerTick(ServerTickEvent.Post event) {
-        MinecraftServer server = event.getServer();
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null) return;
 
         long now = server.overworld().getGameTime();

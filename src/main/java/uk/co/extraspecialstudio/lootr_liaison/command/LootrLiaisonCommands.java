@@ -8,9 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.chunk.LevelChunk;
 import uk.co.extraspecialstudio.lootr_liaison.LiaisonNbt;
 
 /**
@@ -38,7 +38,7 @@ public final class LootrLiaisonCommands {
     }
 
     private static int mimicsStats(CommandSourceStack src) {
-        // Scan loaded chunks around the sender – expensive; for admin use only.
+        // Scan loaded chunks around the sender - expensive; for admin use only.
         Level level = src.getLevel();
         BlockPos center = src.getPlayer() != null ? src.getPlayer().blockPosition() : BlockPos.ZERO;
         int chunkR = 4; // 4 chunks = 64 blocks

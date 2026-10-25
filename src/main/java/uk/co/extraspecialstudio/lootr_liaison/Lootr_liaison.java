@@ -4,9 +4,11 @@ import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -32,6 +34,7 @@ public class Lootr_liaison {
 
     public Lootr_liaison(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::onModConfig);
 
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(ContainerDetectionLayer.class);
@@ -39,10 +42,9 @@ public class Lootr_liaison {
         NeoForge.EVENT_BUS.register(MimicStabilityLayer.class);
 
         migrateLegacyConfig();
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    /** First launch after the id correction keeps the old common config. */
     private static void migrateLegacyConfig() {
         try {
             Path dir = FMLPaths.CONFIGDIR.get();
@@ -56,6 +58,12 @@ public class Lootr_liaison {
         }
     }
 
+    private void onModConfig(final ModConfigEvent event) {
+        if (event.getConfig().getSpec() == Config.SPEC) {
+            Config.reload();
+        }
+    }
+
     private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("Lootr Liaison: structure container finalization and mimic stability enabled.");
         if (DeadLettersCompat.isPresent()) {
@@ -64,10 +72,6 @@ public class Lootr_liaison {
         installLootTableLevelWarningFilter();
     }
 
-    /**
-     * Suppresses the "block entity had its loot table set before its level was set" warning
-     * that can appear during worldgen. Safe no-op if Log4j context is unavailable.
-     */
     private void installLootTableLevelWarningFilter() {
         try {
             LoggerContext ctx = LoggerContext.getContext(false);
